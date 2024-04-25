@@ -46,3 +46,8 @@ hashmap.c:74:8: error: unused variable ‘old_capacity’ [-Werror=unused-variab
 cc1: all warnings being treated as errors
 Compilation failed
 892bc88
+Thu 25 Apr 2024 11:53:09 PM UTC: 
+ hashmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests:  0|0
+44a1047
