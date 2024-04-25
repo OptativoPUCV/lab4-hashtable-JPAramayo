@@ -58,6 +58,7 @@ void insertMap(HashMap * map, char * key, void * value) {
   
     do {
       if (aviable(map->buckets, i)) {
+        printf("Índice: %ld\n", i);
         insertPair(map->buckets, key, value, i);
         map->size++;
         map->current = i;
@@ -83,8 +84,8 @@ HashMap * createMap(long capacity) {
 }
 
 void eraseMap(HashMap * map,  char * key) {    
-
-
+  Pair *deleted = searchMap(map, key);
+  deleted->key = NULL;
 }
 
 Pair * searchMap(HashMap * map,  char * key) {   
@@ -98,11 +99,19 @@ Pair * searchMap(HashMap * map,  char * key) {
 }
 
 Pair * firstMap(HashMap * map) {
-
-    return NULL;
+  for (long i = 0; i < map->capacity; i++) {
+    if (map->buckets[i] != NULL){
+      map->current = i;
+      return map->buckets[i];
+    }
+  } return NULL;
 }
 
 Pair * nextMap(HashMap * map) {
-
-    return NULL;
+  for (long i = map->current; i < map->capacity; i++) {
+    if (map->buckets[i] != NULL){
+      map->current = i;
+      return map->buckets[i];
+    }
+  } return NULL;
 }
