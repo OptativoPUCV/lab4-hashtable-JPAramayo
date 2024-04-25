@@ -46,6 +46,7 @@ bool aviable(Pair **buckets, long pos) {
 }
 
 void insertPair(Pair **buckets, char * key, void * value, long pos) {
+  if (buckets[pos] == NULL) buckets[pos] = createPair(key, value);
   buckets[pos]->key = key;
   buckets[pos]->value = value;
 }
@@ -53,13 +54,12 @@ void insertPair(Pair **buckets, char * key, void * value, long pos) {
 void insertMap(HashMap * map, char * key, void * value) {
     if(map==NULL || key==NULL) return;
     if(map->size > 0.7 * map->capacity) enlarge(map);
+  
     long hashkey = hash(key, map->capacity);
     long i = hashkey;
   
     do {
-      printf("intento\n");
       if (aviable(map->buckets, i)) {
-        printf("Índice: %ld\n", i);
         insertPair(map->buckets, key, value, i);
         map->size++;
         map->current = i;
