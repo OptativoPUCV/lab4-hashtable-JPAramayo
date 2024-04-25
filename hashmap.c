@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "hashmap.h"
 #include <stdbool.h>
-
+#include <assert.h>
 
 
 typedef struct HashMap HashMap;
@@ -77,11 +77,13 @@ void enlarge(HashMap * map) {
 
 HashMap * createMap(long capacity) {
     HashMap * map = (HashMap *)malloc(sizeof(HashMap));
+    assert(map != NULL);
     map->buckets = (Pair **)calloc(capacity, sizeof(Pair *));
+    assert(map->buckets != NULL);
     map->size = 0;
     map->capacity = capacity;
     map->current = -1;
-    return NULL;
+    return map;
 }
 
 void eraseMap(HashMap * map,  char * key) {    
