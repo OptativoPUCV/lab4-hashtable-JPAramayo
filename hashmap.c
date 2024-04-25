@@ -4,6 +4,8 @@
 #include <math.h>
 #include <ctype.h>
 #include "hashmap.h"
+#include <stdbool.h>
+
 
 
 typedef struct HashMap HashMap;
@@ -38,16 +40,30 @@ int is_equal(void* key1, void* key2){
     return 0;
 }
 
+bool aviable(Pair **buckets, long pos) {
+  if (buckets[pos] == NULL || buckets[pos]->key == NULL) return true;
+  return false;
+}
+
+void insertPair(Pair **buckets, char * key, void * value, long pos) {
+  buckets[pos]->key = key;
+  buckets[pos]->value = value;
+}
 
 void insertMap(HashMap * map, char * key, void * value) {
     if(map==NULL || key==NULL) return;
     if(map->size > 0.7 * map->capacity) enlarge(map);
     long hashkey = hash(key, map->capacity);
+    long i = hashkey;
   
-    while(map->buckets[hashkey] != NULL && map->buckets[hashkey]->key != NULL) {
-        hashkey++;
-    }
-    
+    do {
+      if (aviable(map->buckets, i)) {
+        insertPair(map->buckets, key, value, i);
+        map->size++;
+        map->current = i;
+        return;
+      } i = (i + 1) % map->capacity;
+    } while (i != hashkey);
 }
 
 void enlarge(HashMap * map) {
@@ -72,9 +88,13 @@ void eraseMap(HashMap * map,  char * key) {
 }
 
 Pair * searchMap(HashMap * map,  char * key) {   
-
-
-    return NULL;
+  long hashkey = hash(key, map->capacity);
+  while (map->buckets[hashkey] != NULL) {
+    if (is_equal(map->buckets[hashkey]->key, key)) {
+      map->current = hashkey;
+      return map->buckets[hashkey];
+    } hashkey = (hashkey + 1) % map->capacity;
+  } return NULL;
 }
 
 Pair * firstMap(HashMap * map) {
