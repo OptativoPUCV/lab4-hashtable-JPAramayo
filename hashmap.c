@@ -83,7 +83,6 @@ void enlarge(HashMap * map) {
   }
 }
 
-
 HashMap * createMap(long capacity) {
     HashMap * map = (HashMap *)malloc(sizeof(HashMap));
     assert(map != NULL);
@@ -97,8 +96,10 @@ HashMap * createMap(long capacity) {
 
 void eraseMap(HashMap * map,  char * key) {    
   Pair *deleted = searchMap(map, key);
-  deleted->key = NULL;
-  map->size -= 1;
+  if (deleted != NULL) {
+    deleted->key = NULL;
+    map->size -= 1;
+  }
 }
 
 Pair * searchMap(HashMap * map,  char * key) {   
