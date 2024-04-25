@@ -57,6 +57,7 @@ void insertMap(HashMap * map, char * key, void * value) {
     long i = hashkey;
   
     do {
+      printf("intento\n");
       if (aviable(map->buckets, i)) {
         printf("Índice: %ld\n", i);
         insertPair(map->buckets, key, value, i);
